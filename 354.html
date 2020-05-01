@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+html, body{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin:0;
+  overflow: hidden;
+  font-family: Helvetica;
+}
+#tree{
+  width:100%;
+  height:100%;
+}
+</style>
+
+</head>
+<body>
+        <script src="https://balkangraph.com/js/latest/OrgChart.js"></script>
+    
+        <div id="tree"/>
+
+    <script>
+    window.onload = function () {
+        
+      OrgChart.templates.myTemplate = Object.assign({}, OrgChart.templates.ana);
+      OrgChart.templates.myTemplate.plus = '';
+      OrgChart.templates.myTemplate.minus = '';
+      OrgChart.templates.myTemplate1 = Object.assign({}, OrgChart.templates.ana);
+      OrgChart.templates.myTemplate1.link = '';
+
+      var chart = new OrgChart(document.getElementById("tree"), {
+      nodeBinding: {
+            field_0: "name",
+            field_1: "title",
+            img_0: "img"
+        },
+        menu: {
+          pdf: { text: "export" }
+        },
+        slinks: [
+          { from: 2, to: 4, label: 'text'}, 
+        ],
+        tags: {
+          myTemplate: {
+            template: "myTemplate"
+          },
+          myTemplate1: {
+            template: "myTemplate1"
+          }
+        }              
+       
+    });
+
+    chart.on('expcollclick', function (sender, action, id, ids) {
+      if (action == OrgChart.COLLAPSE && id == 3){
+        var node = { id: 5, pid: 2, tags: ["myTemplate1"], name: "Elliot Patel" };
+        chart.addNode(node);
+        chart.addSlink(2, 5, 'text', 'orange');
+      }
+        
+      else if (action == OrgChart.EXPAND && id == 3){
+        chart.removeNode(5);        
+        
+      } 
+
+    });  
+
+
+    nodes = [
+      { id: 1,  },
+            { id: 2, pid: 1, name: "Ashley Barnett", tags: ["myTemplate"], name: "Ashley Barnett" },
+            { id: 3, pid: 1, name: "Caden Ellison" },
+            { id: 4, pid: 3, name: "Elliot Patel" }
+        ];
+
+        chart.load(nodes);
+    }
+    
+    </script>
+</body>
+</html>
